@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tableau Example</title>
+</head>
+<body>
+    <div id="main"></div>
+    <script>
+        // JavaScript equivalent of the Python code
+        const png1 = `<img src="symboles/circle.svg">`;
+        const png2 = `<img src="symboles/cube.svg">`;
+        const png3 = `<img src="symboles/penta.svg">`;
+        const png4 = `<img src="symboles/pyramide.svg">`;
+        const png5 = `<img src="symboles/star.svg">`;
+        const listePng = [png1, png2, png3, png4, png5];
+
+        function tableau(hauteur, largeur) {
+            let htmlTable = '<table>\n';
+            for (let i = 0; i < hauteur; i++) {
+                htmlTable += '  <tr>\n';
+                for (let j = 0; j < largeur; j++) {
+                    const pngChoice = listePng[Math.floor(5 * Math.random())];
+                    if (i === hauteur - 1 && j !== largeur - 1) {
+                        htmlTable += `<td id="case${i}${j}">${pngChoice}</td>\n`;
+                    } else {
+                        htmlTable += `<td id="case${i}${j}">${pngChoice}</td>\n`;
+                    }
+                }
+                htmlTable += '  </tr>\n';
+            }
+            htmlTable += '</table>';
+            return htmlTable;
+        }
+
+        function init() {
+            const main = document.querySelector("#main");
+            main.innerHTML = `
+            <style>
+                #jeu table { float: none; }
+                #jeu table td {
+                    border: 1px solid black; 
+                    padding: 1px 2px;
+                    width: 80px;
+                    height: 80px;
+                    font-family: Helvetica; 
+                    font-size: 20px; 
+                    text-align: center;
+                }
+                #jeu table td img {
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;
+                    object-fit: contain;
+                    width: 80%;
+                    height: 80%;
+                }
+            </style>
+            `;
+            main.innerHTML += tableau(6, 6);
+        }
+
+        init(); // Calling the init function to initialize the HTML content.
+    </script>
+</body>
+</html>
