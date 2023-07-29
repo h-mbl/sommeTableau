@@ -9,7 +9,16 @@ listePng=["""<img src="symboles/circle.svg">""",\
 
 #cette liste contient la valeur associée à chaque image
 #listePng[0] sa valeur est valeurPng[0]
-valeurPng = list(map(lambda valeur: int(20*random()), range(4)))
+valeurPng=[]
+#implementation de randint avec filter et map
+while len(valeurPng) != len(listePng):
+    #retire les elements qui ne sont pas dans l'intervalle
+    valeurPng=list(filter(lambda x: x>= 1 and x<=20, list(map(lambda valeur:\
+                                               int(20*random()), range(5)))))
+    #genere d'autres nombres pour remplacer les nombres supprimés 
+    if len(valeurPng) != len(listePng) :
+         valeurPng += list(filter(lambda x: x>= 1 and x<=20, list(map(lambda\
+             valeur: int(20*random()), range(len(listePng)-len(valeurPng))))))
 
 #cette fonction dessine un tableau en html
 def tableau(hauteur,largeur):
@@ -25,7 +34,8 @@ def tableau(hauteur,largeur):
               htmlTable += '<td id="case'+ str(compteur) + '">' '</td>\n'
               compteur+=1
           elif j != largeur-1:
-            htmlTable += '<td id="case'+ str(compteur) + '" onclick=clic('+ str(compteur)+')>'+pngChoice+ '</td>\n'
+            htmlTable += '<td id="case'+ str(compteur) + '" onclick=clic('+\
+            str(compteur)+')>'+pngChoice+ '</td>\n'
             compteur+=1
           elif j == largeur-1:
             htmlTable += '<td id="case'+ str(compteur) + '">' '</td>\n'
@@ -62,7 +72,9 @@ def somme():
          #gestion de la condition qui empechait de selectionner la dernière 
          #colonne lors de la derniere iteration de la premiere boucle
          if len(colonne)>0:
-            contenu(case).innerHTML = str(functools.reduce(lambda x,y:x+y,colonne))
+            #breakpoint()
+            contenu(case).innerHTML = str(functools.reduce(lambda x,y:\
+                                                           x+y,colonne))
     #itere le saut
     saut += largeur
     
@@ -80,17 +92,50 @@ def somme():
               x= listePng.index(elementSvg)
               rangee.append(valeurPng[x])
           elif j == hauteur-1 and i != largeur-1:
-              contenu(case).innerHTML = str(functools.reduce(lambda x,y:x+y,rangee))
+              contenu(case).innerHTML = str(functools.reduce(lambda x,y:\
+                                                             x+y,rangee))
       #le saut se fait par rangée 
       saut += largeur
 
+def soustration(case,prompt):
+    print(case)
+    init= case
+    while case not in list(map(lambda x:x,range(((hauteur)*(largeur))-largeur,\
+                                                ((hauteur)*(largeur))))):
+           case +=largeur
+           
+    temp = contenu(case).innerHTML
+    valeur= int(temp)-prompt
+    contenu(case).innerHTML = str(valeur)
+    if valeur < 0 :
+        return False
+    elif valeur == 0 :
+        return True
+    colonneS=[]
+    case=init
+    print(case)
+    #cette liste enregistre les valeurs des images sur une colonne
+    while case not in list(map(lambda x:x,range(largeur-1,(hauteur)*(largeur),\
+                                                largeur))):
+        case += 1
+    temp = contenu(case).innerHTML
+    valeur= int(temp)-prompt
+    contenu(case).innerHTML = str(valeur)
+    if valeur < 0 :
+        return False
+    elif valeur == 0 :
+        return True
 def contenu(id):
    return document.querySelector("#case" + str(id))
 def clic(case):
-    #htmlTable += '<td id="case'+ str(compteur) + '" onclick=clic('+ str(compteur)+')>'+pngChoice+ '</td>\n'
     a=int(prompt("ecrivez un nombre compris entre 1 et 20"))
-    contenu(case).innerHTML += """<div class='centered'>""" + str(a) + """</div>"""
-    print(contenu(case).innerHTML)
+    id=case
+    temp= contenu(case).innerHTML
+    #gestion du cas d'une case deja remplie
+    if temp in listePng:
+        contenu(case).innerHTML = """<div class= "container">""" +temp + \
+        """<h2 class='centered'>""" + str(a) + """</h2></div>"""
+        soustration(case,a)
 def init():
     global hauteur 
     global largeur
@@ -117,16 +162,25 @@ def init():
             width: 80%;
             height: 80%;
         }
+        .container {
+           position: relative;
+          }
+         .container img {
+         width: 100%;
+         height: 100%;
+         }
+         .centered{
+           color: black;
+           position: absolute;
+           top:50%;
+           left:50%;
+           transform:translate(-50%,-50%);
+        }
         #resultat {color: red;}
         #main{
          margin-top: 50px;
          margin-left: 50px;
         }
-        .centered{
-        position: absolute;
-        top:50%;
-        left:50%;
-        transform:translate(-50%,-50%);}
       </style>
       """
     resultat= """<h1 id='resultat'>Jouer!<h1>"""
@@ -134,3 +188,4 @@ def init():
     main.innerHTML += resultat
     main.innerHTML += tableau(hauteur,largeur)
     somme()
+init()
