@@ -1,5 +1,6 @@
 import functools
-
+global nouvellePartie
+nouvellePartie = True
 #cette liste contient les liens de chaque image
 listePng=["""<img src="symboles/circle.svg">""",\
           """<img src="symboles/cube.svg">""",\
@@ -20,8 +21,12 @@ while len(valeurPng) != len(listePng):
          valeurPng += list(filter(lambda x: x>= 1 and x<=20, list(map(lambda\
              valeur: int(20*random()), range(len(listePng)-len(valeurPng))))))
 print(valeurPng)
-#valeurPng=[5,5,5,5,5]
+valeurPng=[5,5,5,5,5]
 #cette fonction dessine un tableau en html
+def head():
+    resultat = """<button onclick="start()">Nouvelle partie</button>\n"""
+    resultat += """<h1 id='caseResultat'>Jouer!<h1>"""
+    return resultat
 def tableau(hauteur,largeur):
     htmlTable= '<table>\n'
     compteur=0
@@ -70,11 +75,12 @@ def verificateur():
     if len(list(filter(lambda x:x>=0,rangee))) == len(rangee) or len(list(filter(lambda x:x>=0,rangee))) == len(colonne):
         if len(list(filter(lambda x:x==0,rangee))) == len(rangee) and len(list(filter(lambda x:x==0,rangee))) == len(colonne):
           #victoire
-          print("victoire")
-        else:
-            print("partie toujours en cours")
+          nouvellePartie =False
+          print(nouvellePartie)
+          contenu("Resultat").innerHTML= "victoire"
     else:
-       print("echec")
+        nouvellePartie =False
+        contenu("Resultat").innerHTML= "victoire"
 #cette fonctionne additionne les colonnes et les rangées afin d'obtenir la 
 #somme des images
 def somme():
@@ -197,24 +203,32 @@ def soustration(caseInit, valeurPrompt,tempInit):
                  #  return False
         #le saut se fait par rangée 
         saut += largeur
-    verificateur()
+        verificateur()
 
 def contenu(id):
    return document.querySelector("#case" + str(id))
 def clic(case):
-    a=int(prompt("ecrivez un nombre compris entre 1 et 20"))
-    id=case
-    temp= contenu(case).innerHTML
-    #gestion du cas d'une case deja remplie
-    if temp in listePng:
-      #  contenu(case).innerHTML = """<div class= "container">""" +temp + \
-       # """<h2 class='centered'>""" + str(a) + """</h2></div>"""
-        soustration(case,a, temp)
+    breakpoint()
+    if nouvellePartie == True:
+        a=int(prompt("ecrivez un nombre compris entre 1 et 20"))
+        id=case
+        temp= contenu(case).innerHTML
+        #gestion du cas d'une case deja remplie
+        if temp in listePng :
+            #  contenu(case).innerHTML = """<div class= "container">""" +temp + \
+            # """<h2 class='centered'>""" + str(a) + """</h2></div>"""
+            soustration(case,a, temp)
+    else:
+        alert("lancez une nouvelle partie")
+def start():
+    init()
+    
 def init():
     global hauteur 
     global largeur
     hauteur =6
     largeur = 6 
+    print("je suis passe par ici")
     main = document.querySelector("#main")
     main.innerHTML = """
       <style>
@@ -250,16 +264,16 @@ def init():
            left:50%;
            transform:translate(-50%,-50%);
         }
-        #resultat {color: red;}
+        #caseResultat {color: red;}
         #main{
          margin-top: 50px;
          margin-left: 50px;
         }
       </style>
       """
-    resultat= """<h1 id='resultat'>Jouer!<h1>"""
-    main.innerHTML += """<button id='nouvellePartie'> nouvelle partie</button>"""
-    main.innerHTML += resultat
+   # main.innerHTML += """<button onclick="clic()">Nouvelle partie</button>\n"""
+   # main.innerHTML += """<h1 id='resultat'>Jouer!<h1>\n"""
+    main.innerHTML += head()
     main.innerHTML += tableau(hauteur,largeur)
     somme()
 init()
