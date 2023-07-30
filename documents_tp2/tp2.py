@@ -19,7 +19,8 @@ while len(valeurPng) != len(listePng):
     if len(valeurPng) != len(listePng) :
          valeurPng += list(filter(lambda x: x>= 1 and x<=20, list(map(lambda\
              valeur: int(20*random()), range(len(listePng)-len(valeurPng))))))
-print(valeurPng)
+#print(valeurPng)
+valeurPng=[5,5,5,5,5]
 #cette fonction dessine un tableau en html
 def tableau(hauteur,largeur):
     htmlTable= '<table>\n'
@@ -103,7 +104,7 @@ def soustration(caseInit, valeurPrompt,tempInit):
 
     #temp = contenu(caseInit).innerHTML
     saut=0
-    #breakpoint()
+    breakpoint()
     for i in range(largeur):
     #cette liste enregistre les valeurs des images sur une colonne
         colonne=[]
@@ -117,16 +118,23 @@ def soustration(caseInit, valeurPrompt,tempInit):
               if (largeur-1)*(i+1) < ((hauteur)*(largeur))-largeur:
                 elementSvg = contenu(case).innerHTML
                 if tempInit == elementSvg: 
+                    #print(case)
+                   # breakpoint()
                     contenu(case).innerHTML = """<div class= "container">""" +tempInit + """<h2 class='centered'>""" + str(valeurPrompt) + """</h2></div>"""
                     #contenu(case).innerHTML = str(valeurPrompt)
                     colonne.append(valeurPrompt)
+                    #print(colonne)
             #cette condition permet d'ecrire le resultat dans la derniere rangee de 
             #la colonne en evitant la derniere colonne 
             elif j >= ((hauteur)*(largeur))-largeur and  j < ((hauteur)*(largeur)):
                 #gestion de la condition qui empechait de selectionner la dernière 
                 #colonne lors de la derniere iteration de la premiere boucle
-                if len(colonne)>0:
+               # breakpoint()
+                if len(colonne)> 0:
                    #breakpoint()
+                   #on ajoute la valeur de la case init
+                    #on l'ajoute a la fin car on doit verifier la condition ci-haut
+                   #colonne.append(valeurPrompt)
                    temp = contenu(case).innerHTML
                    valeur = int(temp)- functools.reduce(lambda x,y:\
                                                         x+y,colonne)
@@ -152,6 +160,7 @@ def soustration(caseInit, valeurPrompt,tempInit):
                     #print(case)
                     rangee.append(valeurPrompt)
             elif j == hauteur-1 and i != largeur-1 and len(rangee)>0:
+                #rangee.append(valeurPrompt)
                 temp = contenu(case).innerHTML
                 valeur = int(temp)- functools.reduce(lambda x,y: x+y,rangee)
                 contenu(case).innerHTML =  str(valeur)
@@ -168,9 +177,9 @@ def clic(case):
     temp= contenu(case).innerHTML
     #gestion du cas d'une case deja remplie
     if temp in listePng:
-        contenu(case).innerHTML = """<div class= "container">""" +temp + \
-        """<h2 class='centered'>""" + str(a) + """</h2></div>"""
-        soustration(case,a,temp)
+      #  contenu(case).innerHTML = """<div class= "container">""" +temp + \
+       # """<h2 class='centered'>""" + str(a) + """</h2></div>"""
+        soustration(case,a, temp)
 def init():
     global hauteur 
     global largeur
