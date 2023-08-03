@@ -33,4 +33,4 @@ class ServeurWeb(http.server.BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
-http.server.HTTPServer(('localhost', 8000), ServeurWeb).serve_forever()
+http.server.HTTPServer(('localhost', 8080), ServeurWeb).serve_forever()
