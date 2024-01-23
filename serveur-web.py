@@ -5,7 +5,7 @@ def readFile(path):
 
 def obtenirDocument(path):
     #print(path)
-    return readFile('documents_tp2' + path)
+    return readFile('documents' + path)
 
 def mimeType(path):
     if path[-5:] == '.html': return 'text/html'
@@ -33,4 +33,4 @@ class ServeurWeb(http.server.BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
-http.server.HTTPServer(('localhost', 8000), ServeurWeb).serve_forever()
+http.server.HTTPServer(('localhost', 7000), ServeurWeb).serve_forever()
