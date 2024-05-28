@@ -27,3 +27,8 @@ To run the game, follow these steps:
 This is just a starting point to get you on the right track. Feel free to modify the code and improve the game as you like.
 
 Have fun playing "The Sum of Symbols"! If you encounter any issues or have suggestions, please let us know. Happy gaming!
+
+## picture 
+
+![image](https://github.com/h-mbl/sommeTableau/assets/125308992/f7872b2b-899f-465e-ae3d-3bf449ef3540)
+
